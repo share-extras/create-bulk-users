@@ -1,0 +1,6 @@
+<webscript>
+  <shortname>Admin Console Create Users</shortname>
+  <description>Administration Console - Create Users Console</description>
+  <url>/extras/components/console/create-users-console</url>
+  <family>admin-console</family>
+</webscript>
