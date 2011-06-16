@@ -120,29 +120,50 @@ function addUserToGroup(u, groupName)
 	}
 	people.addAuthority(group, u);
 }
-function logResults(users)
+function logResults(users, params)
 {
-   // TODO Allow logging format to be specified in config
-	var logContent = "";
+	var logContent = "",
+	   logContentTmpl = s["logging"]["format"], // Logging format
+      logFileTmpl = s["logging"]["filename-template"], // Log file name
+      logFileLocation = s["logging"]["location"], // Log folder
+      tmplContentParams,
+      tmplParams,
+      d = new Date(),
+      logFileName,
+      logFolder;
+   
+   if (logContentTmpl == null || logContentTmpl.toString() == "")
+   {
+      throw "No log content template available";
+   }
+   
 	for (var i=0; i<users.length; i++)
 	{
-		logContent += (users[i].firstName + "," + users[i].lastName + "," + users[i].email + "," + users[i].username + "\n");
+	   tmplContentParams = {
+	      firstName: users[i].firstName,
+	      lastName: users[i].lastName,
+	      email: users[i].email,
+	      username: users[i].username,
+	      password: users[i].password,
+         timestamp: "" + d.getTime(),
+         dateString: d.toString(),
+         sentEmail: params.sendEmail,
+         shareUri: params.shareUri
+	   };
+	   logContent += (companyhome.processTemplate(logContentTmpl.toString(), tmplContentParams) + "\n");
 	}
-	var d = new Date();
 
-   var tmplParams = new Array(2);
-   tmplParams["date"] = d;
-   tmplParams["timestamp"] = "" + d.getTime();
-   tmplParams["year"] = "" + d.getFullYear();
-   tmplParams["month"] = "" + d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : "" + (d.getMonth() + 1);
-   tmplParams["date"] = "" + d.getDate() < 10 ? "0" + d.getDate() : "" + d.getDate();
-   tmplParams["hours"] = "" + d.getHours() < 10 ? "0" + d.getHours() : "" + d.getHours();
-   tmplParams["minutes"] = "" + d.getMinutes() < 10 ? "0" + d.getMinutes() : "" + d.getMinutes();
-   tmplParams["seconds"] = "" + d.getSeconds() < 10 ? "0" + d.getSeconds() : "" + d.getSeconds();
-   var logFileName;
-   var logFolder;
-   var logFileTmpl = s["logging"]["filename-template"];
-   var logFileLocation = s["logging"]["location"];
+   tmplParams = {
+      date: d,
+      timestamp: "" + d.getTime(),
+      year: "" + d.getFullYear(),
+      month: "" + d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : "" + (d.getMonth() + 1),
+      date: "" + d.getDate() < 10 ? "0" + d.getDate() : "" + d.getDate(),
+      hours: "" + d.getHours() < 10 ? "0" + d.getHours() : "" + d.getHours(),
+      minutes: "" + d.getMinutes() < 10 ? "0" + d.getMinutes() : "" + d.getMinutes(),
+      seconds: "" + d.getSeconds() < 10 ? "0" + d.getSeconds() : "" + d.getSeconds()
+   };
+   
    if (logFileTmpl != null && logFileTmpl.toString() != "")
    {
       logFileName = companyhome.processTemplate(logFileTmpl.toString(), tmplParams);
@@ -324,7 +345,7 @@ function main()
 	var jsonData = null;
    if (requestbody.content.indexOf("{") == 0)
    {
-      jsonData = jsonUtils.toObject(requestbody.content); 
+      jsonData = jsonUtils.toObject(requestbody.content);
    }
    
 	var userdata = jsonData != null ? jsonData.userdata : args.userdata,
@@ -373,7 +394,11 @@ function main()
 		   create = false;
          // Check the user does not exist already
          existingUser = people.getPerson(users[i].username);
-         if (existingUser)
+         if (!existingUser)
+         {
+            create = true;
+         }
+         else
          {
             var cdPolicy = s["policy"]["username-collisions"].toString();
             // Apply collision-detection policy from config
@@ -473,7 +498,10 @@ function main()
 	model.skippedUsers = skippedusers;
 	if (processedusers.length > 0 && loggingEnabled)
 	{
-		model.resultsLog = logResults(processedusers);
+		model.resultsLog = logResults(processedusers, {
+         shareUri: shareUri,
+         sendEmail: sendEmail
+      });
 	}
 }
 

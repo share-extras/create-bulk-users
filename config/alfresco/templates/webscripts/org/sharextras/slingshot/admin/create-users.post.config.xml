@@ -20,5 +20,6 @@
       <enabled>false</enabled>
       <location>userhome:/</location> <!-- either userhome:/[qnamepath] or companyhome:/[qnamepath] -->
       <filename-template><![CDATA[create-user-results-${args.year}${args.month}${args.date}.csv]]></filename-template> <!-- Freemarker tmpl, file will be appended to if the file exists already -->
+      <format>${args.dateString},${args.firstName},${args.lastName},${args.email},${args.username},${args.sentEmail?string}</format> <!-- Freemarker template with fields to log -->
    </logging>
 </create-users>
