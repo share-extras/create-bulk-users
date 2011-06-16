@@ -80,6 +80,8 @@ if (typeof Extras == "undefined" || !Extras)
             parent.widgets.userData = Dom.get(parent.id + "-userdata");
             parent.widgets.dataType = Dom.get(parent.id + "-select-type");
             parent.widgets.sendEmail = Dom.get(parent.id + "-sendmail");
+            parent.widgets.helpLink = Dom.get(parent.id + "-help-link");
+            parent.widgets.helpText = Dom.get(parent.id + "-format-help");
             // Buttons
             parent.widgets.createButton = Alfresco.util.createYUIButton(parent, "create-button", parent.onCreateClick);
             
@@ -91,6 +93,9 @@ if (typeof Extras == "undefined" || !Extras)
                   }
               }, this
             );
+            
+            // Help link listener
+            YAHOO.util.Event.on(parent.widgets.helpLink, "click", parent.onHelpClick, parent, true);
             
             // Form definition
             /*
@@ -250,6 +255,28 @@ if (typeof Extras == "undefined" || !Extras)
             });
          }
          this.widgets.createButton.set("disabled", false);
+      },
+      
+      /**
+       * Help link click event handler
+       *
+       * @method onHelpClick
+       * @param e {object} DomEvent
+       * @param args {array} Event parameters (depends on event type)
+       */
+      onHelpClick: function ConsoleCreateUsers_onHelpClick(e, args)
+      {
+         Event.stopEvent(e);
+         if (Dom.getStyle(this.widgets.helpText, "display") == "none")
+         {
+            //Dom.removeClass(this.widgets.helpText, "hidden");
+            Alfresco.util.Anim.fadeIn(this.widgets.helpText);
+         }
+         else
+         {
+            Alfresco.util.Anim.fadeOut(this.widgets.helpText);
+            //Dom.addClass(this.widgets.helpText, "hidden");
+         }
       }
    });
 })();

@@ -26,6 +26,10 @@
                <option value="csv" selected="selected">${msg("label.selectType.csv")}</option>
                <option value="json">${msg("label.selectType.json")}</option>
             </select>
+            <span><a href="#" id="${el}-help-link">${msg("label.help")}</a></span>
+         </div>
+         <div id="${el}-format-help" class="format-help theme-bg-color-2" style="display: none">
+            ${msg("message.formatHelp")}
          </div>
          <div>
             <input id="${el}-sendmail" type="checkbox" name="sendmail" checked="checked" value="1" class="checkbox" />
