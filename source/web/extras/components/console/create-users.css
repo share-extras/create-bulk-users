@@ -41,3 +41,8 @@
    padding: 0.8em 0.8em;
    margin-bottom: 0.5em;
 }
+.create-users-console .create-users-options .format-help pre
+{
+   line-height: 1.25em;
+   margin: 0.5em 0;
+}
