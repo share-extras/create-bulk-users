@@ -7,7 +7,7 @@
    <bean id="share-extras.create-users-console.resources" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent">
       <property name="resourceBundles">
          <list>
-            <value>alfresco.messages.create-users-console</value>
+            <value>alfresco.messages.create-bulk-users</value>
          </list>
       </property>
    </bean>
