@@ -3,15 +3,15 @@
       <required-group></required-group> <!-- Security group a user must be in to use this script -->
       <fields>firstName,lastName,email,username?,password?</fields> <!-- Field order (for CSV) and required fields (optional fields are suffixed with a ?) -->
       <username-template>${args.emailName}</username-template> <!-- Freemarker tmpl for automatic generation, allows ${args.emailFull}, ${args.emailName}, ${args.emailDomain}, ${args.firstName} ${args.lastName} params -->
-      <username-collisions>number-different-email</username-collisions> <!-- what to do if the username already exists - one of ignore, error, number, error-different-emails or number-different-email -->
+      <username-collisions>number-different-email</username-collisions> <!-- what to do if the username already exists - one of ignore, error, number, error-different-email or number-different-email -->
       <pw-length>8</pw-length>
       <pw-chars>0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</pw-chars>
-      <default-groups></default-groups> <!-- Separate multiple groups with commas -->
+      <default-groups></default-groups> <!-- Must have 'GROUP_' prefix. Separate multiple groups with commas -->
    </policy>
    <mail-params>
-      <from-address></from-address>
+      <from-address></from-address> <!-- Only used if the user running the script has no e-mail property set -->
       <subject></subject> <!-- Subject line text, if empty uses msg key email.subject -->
-      <template-path></template-path> <!-- Qname path to template in the repo e.g. /app:company_home/app:dictionary/Email Templates/my-new-user-email.ftl, if empty then msg key email.template used instead -->
+      <template-path></template-path> <!-- Qname path to template in the repo e.g. /app:company_home/app:dictionary/cm:Email Templates/cm:my-new-user-email.ftl, if empty then msg key email.template used instead -->
       <template-params>
          <shareUri></shareUri>
       </template-params>
