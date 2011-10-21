@@ -237,7 +237,7 @@ function usersFromCsv(text)
             {
                if (j < fields.length && fields[j] != "")
                {
-                  u[fname] = fields[j];
+                  u[fname.replace(/\?$/, "")] = fields[j];
                }
                else
                {
