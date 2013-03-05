@@ -3,43 +3,56 @@ Create Bulk Users Admin Console Component for Alfresco Share
 
 Author: Will Abson
 
-This project defines an Administration Console component for bulk-creating 
-users from CSV or JSON data.
+This add-on provides a Share administration console component to bulk-create repository users from CSV or JSON data.
 
-The component utilises a custom repository web script which is capable of 
-auto-generating usernames and passwords, adding users to pre-defined security
-groups, sending e-mail notifications to the new users with their details and
-logging of all user accounts created.
+![Create Bulk Users console](screenshots/create-bulk-users.png)
+
+Although similar to the capability provided in the built-in Users console component, this component offers a dedicated user interface with many options for customising the way in which users are created.
+
+Specifically the add-on provides support for
+
+  * Either JSON or CSV input data
+  * Customising which mandatory and optional fields are provided, plus the order of fields in the case of CSV data
+  * Automatic username and password generation, based on configurable policies
+  * Flexible logging of a report of all accounts created
+  * Template-based e-mail notifications to users containing their account credentials
+
+The add-on should work with Alfresco version 3.3 and onwards.
 
 Installation
 ------------
 
-The add-on has been developed to install on top of an existing Alfresco
-3.3/3.4 installation.
+The component is packaged as a single JAR file for easy installation into Alfresco Share.
 
-An Ant build script is provided to build a JAR file containing the 
-custom files, which can then be installed into the 'tomcat/shared/lib' folder 
-of your Alfresco installation.
+To install the component, simply drop the `create-bulk-users-<version>.jar` file into the `tomcat/shared/lib` folder within your Alfresco installation, and restart the application server. You might need to create this folder if it does not already exist.
 
-To build the JAR file, run the following command from the base project 
-directory.
+Custom Configuration (optional)
+------------------------
 
-    ant clean dist-jar
+To change the default behaviour of the utility (e.g. logging, e-mail templates, parameter order), review the repository web script configuration file [create-users.post.config.xml](/config/alfresco/templates/webscripts/org/sharextras/slingshot/admin/create-users.post.config.xml) and override this using the normal mechanism in your installation.
 
-The command should build a JAR file named create-bulk-users.jar
-in the 'build/dist' directory within your project.
+Building from Source
+--------------------
 
-To deploy the dashlet files into a local Tomcat instance for testing, you can 
-use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
+An Ant build script is provided to build a JAR file containing the custom files, which can then be installed into the `tomcat/shared/lib` folder of your Alfresco installation.
+
+To build the JAR file, run Ant from the base project directory.
+
+    ant dist-jar
+
+The command should build a JAR file named `create-bulk-users-<version>.jar` in the `build/dist` directory within your project, which you can then copy into the `tomcat/shared/lib` folder of your Alfresco installation.
+
+Alternatively, you can use the build script to _hot deploy_ the JAR file directly into a local Tomcat instance for testing. You will need to use the `hotcopy-tomcat-jar task` and set the `tomcat.home`
 property in Ant.
 
-    ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
+    ant -Dtomcat.home=C:/Alfresco/tomcat hotcopy-tomcat-jar
     
-Once you have run this you will need to restart Tomcat so that the classpath 
-resources in the JAR file are picked up.
+After you have deployed the JAR file you will need to restart Tomcat to ensure it picks up the changes.
 
-Using the dashlet
------------------
+Usage
+-----
 
-Log in to Alfresco Share as an admin user and navigate to the Administration
-page. Click 'Create Bulk Users' in the left hand side navigation.
+  1. Log in to Alfresco Share and navigate to an Administration page such as Users or Groups
+  2. In the left-hand-side navigation, click *Create Bulk Users*
+  3. Type or paste in your CSV or JSON data into the User Data field. Click _Help_ for details of the data format required.
+  4. Click on *Create Users* to create accounts using the supplied details
